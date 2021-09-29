@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ee:latest'
+    restart: always
+    hostname: 'gitlab'
+    domainname: 'gitlab.local'
+    container_name: 'gitlab'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.local:443'
+        gitlab_rails['initial_root_password'] = 'finos-gitlab-password'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2224
+        gitlab_rails['lfs_enabled'] = true
+        nginx['listen_port'] = 443
+        nginx['ssl_certificate'] = '/etc/gitlab/ssl/gitlab.local.crt'
+        nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/gitlab.local.key'
+        letsencrypt['enable'] = false
+    ports:
+      - '443:443'
+      - '2224:2224'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+      - './certs:/etc/gitlab/ssl'
+    networks:
+      - legend
+networks:
+    legend: {}
