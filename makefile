@@ -1,4 +1,4 @@
-export GITLAB_HOME=/home/balbir/tmp/gitlab
+export GITLAB_HOME=${HOME}/tmp/gitlab
 CERTS_DIR=certs
 HOST_DNS_NAME=gitlab.local
 HOST_KEY_FILE=${CERTS_DIR}/${HOST_DNS_NAME}.key
