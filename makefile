@@ -1,4 +1,4 @@
-export GITLAB_HOME=${HOME}/tmp/gitlab
+export GITLAB_HOME ?= ${HOME}/tmp/gitlab
 CERTS_DIR=certs
 HOST_DNS_NAME=gitlab.local
 HOST_KEY_FILE=${CERTS_DIR}/${HOST_DNS_NAME}.key
@@ -20,6 +20,10 @@ gitlab:
 	docker-compose up -d
 
 clean:
+	docker network prune -f
+
+distclean: clean
 	$(RM) certs/*
+	sudo $(RM) -r ${GITLAB_HOME}/*
 
 .PHONY: certs clean gitlab truststore

@@ -9,7 +9,7 @@ services:
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://gitlab.local:443'
-        gitlab_rails['initial_root_password'] = '${FINOS_GITLAB_PASSWORD}'
+        gitlab_rails['initial_root_password'] = '${FINOS_GITLAB_PASSWORD:?no gitlab password set}'
         gitlab_rails['gitlab_shell_ssh_port'] = 2224
         gitlab_rails['lfs_enabled'] = true
         nginx['listen_port'] = 443
@@ -20,9 +20,9 @@ services:
       - '443:443'
       - '2224:2224'
     volumes:
-      - '$GITLAB_HOME/config:/etc/gitlab'
-      - '$GITLAB_HOME/logs:/var/log/gitlab'
-      - '$GITLAB_HOME/data:/var/opt/gitlab'
+      - '${GITLAB_HOME:?no gitlab home set}/config:/etc/gitlab'
+      - '${GITLAB_HOME:?no gitlab home set}/logs:/var/log/gitlab'
+      - '${GITLAB_HOME:?no gitlab home set}/data:/var/opt/gitlab'
       - './certs:/etc/gitlab/ssl'
     networks:
       legend:
